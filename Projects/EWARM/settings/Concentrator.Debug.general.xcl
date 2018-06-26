@@ -1,0 +1,15 @@
+"D:\IAR 7.8 for STM32\arm\bin\armproc.dll" 
+
+"D:\IAR 7.8 for STM32\arm\bin\armstlink2.dll" 
+
+"F:\中科君达\集中器资料\mbus集中器\mbus集中器程序（蔡永修改）20180608\mbus集中器程序\Projects\EWARM\Debug\Exe\Concentrator.out" 
+
+--plugin "D:\IAR 7.8 for STM32\arm\bin\armbat.dll" 
+
+--device_macro "D:\IAR 7.8 for STM32\arm\config\debugger\ST\STM32L1xx.dmac" 
+
+--flash_loader "D:\IAR 7.8 for STM32\arm\config\flashloader\ST\FlashSTM32L15xxE.board" 
+
+
+
+
