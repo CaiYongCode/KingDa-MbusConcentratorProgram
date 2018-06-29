@@ -61,6 +61,7 @@ typedef enum{
   CJT188_WriteData_CTR        =  0x04,        //写数据 （请求）
   CJT188_WriteAddress_CTR     =  0x15,        //写地址 （请求）
   CJT188_WriteOffset_CTR      =  0x16,        //写机电同步数据（请求）
+  CJT188_ReadAllFlow_CTR      =  0x17,        //读取所有表计当前水量  
 }CJT188_CMD;
 //数据标志定义
 typedef enum{
@@ -262,6 +263,64 @@ typedef struct{
  unsigned char  ParamLength;
  unsigned char  Param[32];
 }CJT188_CmdDeclarator;
+
+///////////////////////////////////////////////////////////////////////////////////////////
+//规约类型及通道号 数据格式
+typedef  union{
+  unsigned char Byte; 
+  struct{
+    unsigned char Protocol: 4;    /* 规约类型   0000:	阀控188 */
+    unsigned char Channel : 3;    /*通道号   0000:	未指定通道
+    0001:	M-BUS通道1
+    0010:	M-BUS通道2
+    0011:	M-BUS通道3
+    0100:	M-BUS通道4
+    0101:	RS485通道
+    0110:	无线通道 */
+    unsigned char Poll_EN : 1;   //是否巡检   0:不巡检  1:巡检
+  }Bit;
+}CJT188_LinkDeclarator;    
+//通讯参数 数据格式	
+typedef union{
+  unsigned char Byte; 
+  struct{
+    unsigned char BaudRate: 3; /*波特率 000: 1200bps
+    001: 2400bps
+    010: 4800bps
+    011: 9600bps
+    100: 19200bps
+    101: 38400bps  暂时未用
+    110: 57600bps  暂时未用	
+    111: 115200bps*/
+    unsigned char DataNumber : 2;   //数据位  00: 6位数据位  01: 7位数据位 10: 8位数据位
+    unsigned char StopBits : 1;   //停止位  0 :1位停止位   1 :2位停止位
+    unsigned char Parity : 2;   //校验位  00:无校验     01:偶校验       10:奇校验
+  }Bit;
+}CJT188_CommDeclarator; 
+typedef struct {
+  CJT188_MeterType        MeterType;      //节点类型ID (HEX)  
+  CJT188_AddresStruct     Addr;           //节点地址
+  CJT188_LinkDeclarator   Link;           //节点规约类型及通道号 (HEX)
+  CJT188_CommDeclarator   Comm;	        //节点通讯参数
+  unsigned char         Flow_PV[4];              //当前累积流量
+  CJT188_ST_Stuct         ST;
+}MeterData_Struct;
+//多表当前水量报文结构体
+typedef struct{
+  unsigned char        Preamble[2];              //前导符
+  unsigned char        Initiator;              //起始符
+  unsigned char        ConcentratorID[5];      //集中器地址
+  unsigned char        FactoryID[2];            //出厂编号
+  unsigned char        FunctionCode;           //功能码
+  unsigned char        DataLength[2];            //数据长度
+  unsigned char        ReplyFlag;              //响应标志
+  unsigned char        PackageSum;             //包总数
+  unsigned char        PackageNum;              //包序号
+  unsigned char        MeterNum;               //表数
+  MeterData_Struct       MeterData[17];  //表信息
+  unsigned char        CS;                     //校验和
+  unsigned char        Terminator;             //结束符
+}MultiMeterFlowPVMessageStruct;
 /*********************************************************************************************************
 外部变量声明区
 *********************************************************************************************************/
@@ -284,7 +343,7 @@ SystemErrName CJT188_WriteDataToNode(CJT188_DI DI,
                                               void* Data, 
                                               unsigned char DataLength,
                                               CJT188_Frame_Struct*  ack);
-
+void CJT188_ReadAllFlow_Func(unsigned char packegeNum,CommPortNumber_Type SourcePort);
 /********************************************************************************************************/
 #endif
 

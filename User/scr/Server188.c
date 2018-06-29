@@ -1234,7 +1234,7 @@ static SystemErrName AllCurrentDataRcmd_Func(Server188_InputData_Stuct* Indata,
     {ReadAddr = &MeterRcmd_ON[4];break;}
   default :{return CmdValid;}
   }
-  itemp =  List.MeterNumber[0] + List.MeterNumber[1] + List.MeterNumber[2] + List.MeterNumber[2];
+  itemp =  List.MeterNumber[0] + List.MeterNumber[1] + List.MeterNumber[2] + List.MeterNumber[3];
   OutputData->pdata.AllCurrentDataRcmd_ack->Spec.FileSum = itemp / 17;
   if(0 != (itemp % 17))
   {OutputData->pdata.AllCurrentDataRcmd_ack->Spec.FileSum ++;}

@@ -25,7 +25,7 @@ if not "%~1" == "" goto debugFile
 
 @echo on 
 
-"D:\IAR 7.8 for STM32\common\bin\cspybat" -f "F:\中科君达\集中器资料\mbus集中器\mbus集中器程序（蔡永修改）20180608\mbus集中器程序\Projects\EWARM\settings\Concentrator.Debug.general.xcl" --backend -f "F:\中科君达\集中器资料\mbus集中器\mbus集中器程序（蔡永修改）20180608\mbus集中器程序\Projects\EWARM\settings\Concentrator.Debug.driver.xcl" 
+"D:\IAR 7.8 for STM32\common\bin\cspybat" -f "F:\中科君达\集中器资料\mbus集中器\mbus集中器程序（蔡永修改）\mbus集中器程序\Projects\EWARM\settings\Concentrator.Debug.general.xcl" --backend -f "F:\中科君达\集中器资料\mbus集中器\mbus集中器程序（蔡永修改）\mbus集中器程序\Projects\EWARM\settings\Concentrator.Debug.driver.xcl" 
 
 @echo off 
 goto end 
@@ -34,7 +34,7 @@ goto end
 
 @echo on 
 
-"D:\IAR 7.8 for STM32\common\bin\cspybat" -f "F:\中科君达\集中器资料\mbus集中器\mbus集中器程序（蔡永修改）20180608\mbus集中器程序\Projects\EWARM\settings\Concentrator.Debug.general.xcl" "--debug_file=%~1" --backend -f "F:\中科君达\集中器资料\mbus集中器\mbus集中器程序（蔡永修改）20180608\mbus集中器程序\Projects\EWARM\settings\Concentrator.Debug.driver.xcl" 
+"D:\IAR 7.8 for STM32\common\bin\cspybat" -f "F:\中科君达\集中器资料\mbus集中器\mbus集中器程序（蔡永修改）\mbus集中器程序\Projects\EWARM\settings\Concentrator.Debug.general.xcl" "--debug_file=%~1" --backend -f "F:\中科君达\集中器资料\mbus集中器\mbus集中器程序（蔡永修改）\mbus集中器程序\Projects\EWARM\settings\Concentrator.Debug.driver.xcl" 
 
 @echo off 
 :end

@@ -28,6 +28,7 @@ unsigned  char MbusMonitor_EN = 0;
 static CJT188_SER_Type  SER_PV = 0;    //包序列号 
 
 static struct CJT188_SendBuff_Struct  CJT188SendBuff[2] ;
+MultiMeterFlowPVMessageStruct MultiMeterFlowPVMessage;
 /*********************************************************************************
 测试变量定义区
 *********************************************************************************/
@@ -83,6 +84,7 @@ void CJT188_2004_init (void)
 *********************************************************************************/
 SystemErrName CJT188_2004_InPut (void *pbuff, unsigned length,CommPortNumber_Type SourcePort)
 {
+  unsigned char packegeNum;
   SystemErrName err = NO_ERR;
   unsigned short itemp;
   CommPortNumber_Type  TargetPort;
@@ -119,6 +121,18 @@ SystemErrName CJT188_2004_InPut (void *pbuff, unsigned length,CommPortNumber_Typ
     WriteAddress_AckFill( &SendBuff->Package, InPutFrame);
     itemp = CJT188_Package_AckFrame(&SendBuff->Package);
     Comm_send(&SendBuff->Package, itemp, SourcePort, P_NULL, P_NULL);
+  }
+  else if(CJT188_ReadAllFlow_CTR == InPutFrame->Head.CTR.Bit.Infr)
+  {
+    err =  CJT188_2004_AddrVerify (&(InPutFrame->Head.Addr));
+    if(NO_ERR !=  err)
+    {return err;}
+    SendBuff = get_CJT188SendBuff (Null_Port);
+    if(P_NULL == SendBuff)
+    {return   PortBusy;}
+    
+    packegeNum = InPutFrame->Data.buff[0];
+    CJT188_ReadAllFlow_Func(packegeNum,SourcePort);
   }
   else
   {
@@ -171,6 +185,117 @@ SystemErrName CJT188_2004_InPut (void *pbuff, unsigned length,CommPortNumber_Typ
   }
   free_CJT188SendBuff (SendBuff);
   return err;  
+}
+/*********************************************************************************
+ Function:      //
+ Description:   //读取某采集器的所有表计当前水量
+ Input:         //
+                //
+ Output:        //
+ Return:        //
+ Others:        //
+*********************************************************************************/ 
+void CJT188_ReadAllFlow_Func(unsigned char packegeNum,CommPortNumber_Type SourcePort)	
+{
+  unsigned char cs = 0;
+  SystemErrName err = NO_ERR;
+  unsigned itemp; 
+  unsigned short ReadAddr;
+  unsigned short length;
+  Server188_MeterListSpecData_Struct  List;
+  Server188_MeterRecordData_Struct Record; 
+  Server188_MeterValueRecordData_Struct Value;
+  
+  memset(&MultiMeterFlowPVMessage,0,sizeof(MultiMeterFlowPVMessageStruct));
+  //拼包
+  MultiMeterFlowPVMessage.Preamble[0] = CJT188_Preamble;
+  MultiMeterFlowPVMessage.Preamble[1] = CJT188_Preamble;
+  MultiMeterFlowPVMessage.Initiator = CJT188_StartCharacter;
+  
+  MultiMeterFlowPVMessage.FactoryID[1] = _188_ConcenConfigData.ID[0];
+  MultiMeterFlowPVMessage.FactoryID[0] = _188_ConcenConfigData.ID[1];
+  MultiMeterFlowPVMessage.ConcentratorID[4] = _188_ConcenConfigData.ID[2];
+  MultiMeterFlowPVMessage.ConcentratorID[3] = _188_ConcenConfigData.ID[3];
+  MultiMeterFlowPVMessage.ConcentratorID[2] = _188_ConcenConfigData.ID[4];
+  MultiMeterFlowPVMessage.ConcentratorID[1] = _188_ConcenConfigData.ID[5];
+  MultiMeterFlowPVMessage.ConcentratorID[0] = _188_ConcenConfigData.ID[6];
+  MultiMeterFlowPVMessage.FunctionCode = CJT188_ReadAllFlow_CTR;
+  MultiMeterFlowPVMessage.DataLength[0] = (17+17*sizeof(MeterData_Struct))%256;
+  MultiMeterFlowPVMessage.DataLength[1] = (17+17*sizeof(MeterData_Struct))/256;
+  
+ //////////////////////////////////////////
+  if(NO_ERR != Read_MeterListSpecFormRom(&List))
+  {  
+    MultiMeterFlowPVMessage.ReplyFlag =  0xCB;   //0xCB:无此包  
+  }  
+  else
+  {
+    itemp =  List.MeterNumber[0] + List.MeterNumber[1] + List.MeterNumber[2] + List.MeterNumber[3];
+    MultiMeterFlowPVMessage.PackageSum = itemp / 17;
+    if(0 != (itemp % 17))
+    {MultiMeterFlowPVMessage.PackageSum ++;}
+    
+    if(MultiMeterFlowPVMessage.PackageSum < packegeNum)
+    {  
+      MultiMeterFlowPVMessage.ReplyFlag =  0xCB;   //0xCB:无此包  
+    }
+    else
+    {
+      MultiMeterFlowPVMessage.ReplyFlag =  0x00;   //0x00:正确应答
+    
+      MultiMeterFlowPVMessage.PackageNum = packegeNum;
+      
+      ReadAddr = (MultiMeterFlowPVMessage.PackageNum-1)*17;
+      while (MultiMeterFlowPVMessage.MeterNum < 17)
+      {      
+        err = ReadMeterRecordFormRom(&Record, ReadAddr);
+        if(NO_ERR == err)
+        {
+          memcpy(&(MultiMeterFlowPVMessage.MeterData[MultiMeterFlowPVMessage.MeterNum]),
+                 &( Record.Config), 
+                 sizeof(Server188_Meter_Stuct));       
+          err = ReadMeterValueFormRom(&Value,ReadAddr);
+          if(NO_ERR == err) 
+          {
+            MultiMeterFlowPVMessage.MeterData[MultiMeterFlowPVMessage.MeterNum].Flow_PV[0] = Value.Value.Flow_PV[0];
+            MultiMeterFlowPVMessage.MeterData[MultiMeterFlowPVMessage.MeterNum].Flow_PV[1] = Value.Value.Flow_PV[1];
+            MultiMeterFlowPVMessage.MeterData[MultiMeterFlowPVMessage.MeterNum].Flow_PV[2] = Value.Value.Flow_PV[2];
+            MultiMeterFlowPVMessage.MeterData[MultiMeterFlowPVMessage.MeterNum].Flow_PV[3] = Value.Value.Flow_PV[3];
+            MultiMeterFlowPVMessage.MeterData[MultiMeterFlowPVMessage.MeterNum].ST.Word = Value.Value.ST.Word;
+            if(0x00 != Value.CSR.Bit.Lose )
+            {MultiMeterFlowPVMessage.MeterData[MultiMeterFlowPVMessage.MeterNum].ST.Bit.Lose = 1;}
+            else
+            {MultiMeterFlowPVMessage.MeterData[MultiMeterFlowPVMessage.MeterNum].ST.Bit.Lose = 0;}
+            MultiMeterFlowPVMessage.MeterData[MultiMeterFlowPVMessage.MeterNum].ST.Bit.RomErr = 0;
+          }
+          else
+          {           
+            MultiMeterFlowPVMessage.MeterData[MultiMeterFlowPVMessage.MeterNum].ST.Word = Value.Value.ST.Word;
+            MultiMeterFlowPVMessage.MeterData[MultiMeterFlowPVMessage.MeterNum].ST.Bit.RomErr = 1;
+          }
+          MultiMeterFlowPVMessage.MeterNum ++; 
+        }
+        ReadAddr++;
+        if(ReadAddr >= TotalNumber_MeterConfig)  
+        {
+          MultiMeterFlowPVMessage.PackageSum =  MultiMeterFlowPVMessage.PackageNum; 
+          break;
+        }
+      }
+    }
+  }
+  
+  itemp = 2;
+  cs = 0;
+  length = 17+17*sizeof(MeterData_Struct);
+  while(itemp < length)
+  {
+    cs +=  ((unsigned char *)&MultiMeterFlowPVMessage)[itemp++];
+  }
+  MultiMeterFlowPVMessage.CS = cs;  
+  MultiMeterFlowPVMessage.Terminator = CJT188_Pause; 
+  
+  Comm_send(&MultiMeterFlowPVMessage, sizeof(MultiMeterFlowPVMessageStruct), SourcePort, P_NULL, P_NULL);
 }
 /*********************************************************************************
  Function:      //
@@ -459,7 +584,8 @@ static CJT188_Frame_Struct* CJT188_2004_frameVerify (void *pbuff, unsigned char 
          ||(CJT188_ReadVerNo_CTR == frame->Head.CTR.Bit.Infr)
            ||(CJT188_ReadAddress_CTR == frame->Head.CTR.Bit.Infr)
              ||(CJT188_WriteData_CTR == frame->Head.CTR.Bit.Infr)
-               ||(CJT188_WriteAddress_CTR == frame->Head.CTR.Bit.Infr))
+               ||(CJT188_WriteAddress_CTR == frame->Head.CTR.Bit.Infr)
+                 ||(CJT188_ReadAllFlow_CTR == frame->Head.CTR.Bit.Infr))
       {
         *err = NO_ERR;
         return frame;
