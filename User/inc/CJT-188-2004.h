@@ -62,6 +62,7 @@ typedef enum{
   CJT188_WriteAddress_CTR     =  0x15,        //写地址 （请求）
   CJT188_WriteOffset_CTR      =  0x16,        //写机电同步数据（请求）
   CJT188_ReadAllFlow_CTR      =  0x17,        //读取所有表计当前水量  
+  CJT188_ReadSingleFlow_CTR   =  0x18,        //读取所有表计当前水量  
 }CJT188_CMD;
 //数据标志定义
 typedef enum{
@@ -321,6 +322,19 @@ typedef struct{
   unsigned char        CS;                     //校验和
   unsigned char        Terminator;             //结束符
 }MultiMeterFlowPVMessageStruct;
+//单表当前水量报文结构体
+typedef struct{
+  unsigned char        Preamble[2];              //前导符
+  unsigned char        Initiator;              //起始符
+  unsigned char        ConcentratorID[5];      //集中器地址
+  unsigned char        FactoryID[2];            //出厂编号
+  unsigned char        FunctionCode;           //功能码
+  unsigned char        DataLength[2];            //数据长度
+  unsigned char        ReplyFlag;              //响应标志
+  MeterData_Struct       MeterData;  //表信息
+  unsigned char        CS;                     //校验和
+  unsigned char        Terminator;             //结束符
+}SingleMeterFlowPVMessageStruct;
 /*********************************************************************************************************
 外部变量声明区
 *********************************************************************************************************/
@@ -344,6 +358,7 @@ SystemErrName CJT188_WriteDataToNode(CJT188_DI DI,
                                               unsigned char DataLength,
                                               CJT188_Frame_Struct*  ack);
 void CJT188_ReadAllFlow_Func(unsigned char packegeNum,CommPortNumber_Type SourcePort);
+void CJT188_ReadSingleFlow_Func(unsigned char*meterID,CommPortNumber_Type SourcePort);
 /********************************************************************************************************/
 #endif
 

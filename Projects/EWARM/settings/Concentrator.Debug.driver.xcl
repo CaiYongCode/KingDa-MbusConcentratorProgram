@@ -6,7 +6,7 @@
 
 "-p" 
 
-"D:\IAR 7.8 for STM32\arm\config\debugger\ST\iostm32l151xx.ddf" 
+"D:\IAR for STM32\arm\config\debugger\ST\iostm32l151xx.ddf" 
 
 "--drv_verify_download" 
 

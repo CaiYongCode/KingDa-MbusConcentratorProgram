@@ -21,7 +21,7 @@ TriggerName=main
 LimitSize=0
 ByteLimit=50
 [DebugChecksum]
-Checksum=1240593754
+Checksum=380930755
 [CodeCoverage]
 Enabled=_ 0
 [Exceptions]
@@ -103,17 +103,8 @@ Fmt13=TimerData_Struct-WeekDay	3	0
 Fmt14=TimerData_Struct-Year	3	0
 Fmt15=USART_BuffStruct-length	3	0
 Fmt16=UsarBuff_Struct-length	3	0
-Fmt17=struct <Unnamed 20>-CS	4	0
-Fmt18=struct <Unnamed 20>-FactoryID	4	0
-Fmt19=struct <Unnamed 20>-FunctionCode	4	0
-Fmt20=struct <Unnamed 20>-Initiator	4	0
-Fmt21=struct <Unnamed 20>-MeterNum	4	0
-Fmt22=struct <Unnamed 20>-PackageNum	4	0
-Fmt23=struct <Unnamed 20>-PackageSum	4	0
-Fmt24=struct <Unnamed 20>-Preamble	4	0
-Fmt25=struct <Unnamed 20>-ReplyFlag	4	0
-Fmt26=struct <Unnamed 20>-Terminator	4	0
-Fmt27=struct CJT188_SendBuff_Struct-PackageLength	3	0
+Fmt17=struct <Unnamed 21>-ReplyFlag	4	0
+Fmt18=struct CJT188_SendBuff_Struct-PackageLength	3	0
 [array_types]
 Fmt0=char[7]	4	0
 Fmt1=unsigned char[100]	3	0
@@ -266,6 +257,13 @@ ShowTimeLog=1
 SumEnabled=0
 ShowTimeSum=1
 SumSortOrder=0
+[Disassemble mode]
+mode=0
+[Breakpoints2]
+Bp0=_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\..\User\scr}.1234.3" 0 0 1 "" 0 "" 0
+Bp1=_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\..\User\scr\CJT-188-2004.c}.138.8" 0 0 1 "" 0 "" 0
+Bp2=_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\..\User\scr\CJT-188-2004.c}.710.3" 0 0 1 "" 0 "" 0
+Count=3
 [Log file]
 LoggingEnabled=_ 0
 LogFile=_ ""
@@ -273,6 +271,15 @@ Category=_ 0
 [TermIOLog]
 LoggingEnabled=_ 0
 LogFile=_ ""
+[Aliases]
+A0=_ "D:\Personal\Desktop\mbus集中器程序\BSP\scr\MCU_Config.c" ""
+A1=_ "D:\Personal\Desktop\mbus集中器程序\Projects\src\main.c" ""
+A2=_ "D:\设计数据\2017\低功耗集中器\188\Projects\src\main.c" ""
+A3=_ "D:\设计数据\2017\低功耗集中器\新建文件夹 (8)\188\Projects\src\main.c" ""
+A4=_ "E:\2016\集中器V2.2\软件\最新\Projects\src\main.c" ""
+A5=_ "F:\中科君达\集中器资料\mbus集中器\mbus集中器程序（马先跃修改）20180530\mbus集中器程序\BSP\scr\MCU_Config.c" ""
+Count=6
+SuppressDialog=1
 [DriverProfiling]
 Enabled=0
 Mode=3
@@ -283,17 +290,3 @@ Exclusions=
 Enabled=0
 [CallStackStripe]
 ShowTiming=1
-[Disassemble mode]
-mode=0
-[Breakpoints2]
-Bp0=_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\..\User\scr}.1234.3" 0 0 1 "" 0 "" 0
-Count=1
-[Aliases]
-A0=_ "D:\Personal\Desktop\mbus集中器程序\BSP\scr\MCU_Config.c" ""
-A1=_ "D:\Personal\Desktop\mbus集中器程序\Projects\src\main.c" ""
-A2=_ "D:\设计数据\2017\低功耗集中器\188\Projects\src\main.c" ""
-A3=_ "D:\设计数据\2017\低功耗集中器\新建文件夹 (8)\188\Projects\src\main.c" ""
-A4=_ "E:\2016\集中器V2.2\软件\最新\Projects\src\main.c" ""
-A5=_ "F:\中科君达\集中器资料\mbus集中器\mbus集中器程序（马先跃修改）20180530\mbus集中器程序\BSP\scr\MCU_Config.c" ""
-Count=6
-SuppressDialog=1
