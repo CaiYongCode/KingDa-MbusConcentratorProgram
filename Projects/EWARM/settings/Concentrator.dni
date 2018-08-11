@@ -21,7 +21,7 @@ TriggerName=main
 LimitSize=0
 ByteLimit=50
 [DebugChecksum]
-Checksum=380930755
+Checksum=-999386889
 [CodeCoverage]
 Enabled=_ 0
 [Exceptions]
@@ -103,8 +103,7 @@ Fmt13=TimerData_Struct-WeekDay	3	0
 Fmt14=TimerData_Struct-Year	3	0
 Fmt15=USART_BuffStruct-length	3	0
 Fmt16=UsarBuff_Struct-length	3	0
-Fmt17=struct <Unnamed 21>-ReplyFlag	4	0
-Fmt18=struct CJT188_SendBuff_Struct-PackageLength	3	0
+Fmt17=struct CJT188_SendBuff_Struct-PackageLength	3	0
 [array_types]
 Fmt0=char[7]	4	0
 Fmt1=unsigned char[100]	3	0
@@ -261,9 +260,7 @@ SumSortOrder=0
 mode=0
 [Breakpoints2]
 Bp0=_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\..\User\scr}.1234.3" 0 0 1 "" 0 "" 0
-Bp1=_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\..\User\scr\CJT-188-2004.c}.138.8" 0 0 1 "" 0 "" 0
-Bp2=_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\..\User\scr\CJT-188-2004.c}.710.3" 0 0 1 "" 0 "" 0
-Count=3
+Count=1
 [Log file]
 LoggingEnabled=_ 0
 LogFile=_ ""

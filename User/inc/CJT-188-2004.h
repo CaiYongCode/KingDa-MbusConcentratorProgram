@@ -29,6 +29,7 @@
 #define  CJT188_Pause                   0x16
 
 #define  CJT_188ValveOpenCmd            0x55      //开 阀 控 制 操作 :55H
+#define  CJT_188ValveHalfOpenCmd        0x77     //半 开 控 制 操作 :77H
 #define  CJT_188ValveCloseCmd           0x99     //关 阀 控 制 操作 :99H
 #define  CJT_188ValveMaintainCmd        0xAA     //关 阀 控 制 操作 :99H
 

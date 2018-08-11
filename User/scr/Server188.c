@@ -2074,24 +2074,34 @@ void  PatrolTask( void )
           if(NO_ERR == err)
           {
             st.Word = ack.Data.OK.Data.MeterData.ST.Word;
-            ValveAsk.ValveCmd = CJT_188ValveMaintainCmd;
+            ValveAsk.ValveCmd = CJT_188ValveHalfOpenCmd;
             err = CJT188_WriteDataToNode(CJT188_WriteValveState_DI,  &Meter, TargetPort, 
                                      &ValveAsk,sizeof (CJT8188_ValveAsk_Struct), 
                                      &ack);
-            vTaskDelay(_1s * 25);
-            err = CJT188_ReadDataFormNode (CJT188_ReadData_DI, &Meter, TargetPort, &ack);
-            if((ack.Data.OK.Data.ST.Bit.Valve_State != st.Bit.Valve_State)
-               &&(0x03 != st.Bit.Valve_State))
-            {
-              if(0x01 == st.Bit.Valve_State)
-              {ValveAsk.ValveCmd = CJT_188ValveCloseCmd;}
-              else 
-              {ValveAsk.ValveCmd = CJT_188ValveOpenCmd;}
-              err = CJT188_WriteDataToNode(CJT188_WriteValveState_DI,  &Meter, TargetPort, 
-                                           &ValveAsk, sizeof (CJT8188_ValveAsk_Struct), 
-                                           &ack);
-              vTaskDelay(_1s * 15);
-            }
+            vTaskDelay(_1s * 8);
+           
+            if(0x00 == st.Bit.Valve_State)
+            {ValveAsk.ValveCmd = CJT_188ValveOpenCmd;}
+            else if(0x01 == st.Bit.Valve_State)
+            {ValveAsk.ValveCmd = CJT_188ValveCloseCmd;}
+            err = CJT188_WriteDataToNode(CJT188_WriteValveState_DI,  &Meter, TargetPort, 
+                                         &ValveAsk, sizeof (CJT8188_ValveAsk_Struct), 
+                                         &ack);
+             vTaskDelay(_1s * 8);
+            
+//            err = CJT188_ReadDataFormNode (CJT188_ReadData_DI, &Meter, TargetPort, &ack);
+//            if((ack.Data.OK.Data.ST.Bit.Valve_State != st.Bit.Valve_State)
+//               &&(0x03 != st.Bit.Valve_State))
+//            {
+//              if(0x01 == st.Bit.Valve_State)
+//              {ValveAsk.ValveCmd = CJT_188ValveCloseCmd;}
+//              else 
+//              {ValveAsk.ValveCmd = CJT_188ValveOpenCmd;}
+//              err = CJT188_WriteDataToNode(CJT188_WriteValveState_DI,  &Meter, TargetPort, 
+//                                           &ValveAsk, sizeof (CJT8188_ValveAsk_Struct), 
+//                                           &ack);
+//              vTaskDelay(_1s * 15);
+//            }
             
           }
           xSemaphoreGive(Mbus_xMutex);

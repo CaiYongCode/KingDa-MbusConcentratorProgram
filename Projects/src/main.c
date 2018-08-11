@@ -137,6 +137,7 @@ int main(void)
  IWDG_SetReload(3125);    // 2.5 秒 
  IWDG_ReloadCounter( ); //复位看门狗
  IWDG_Enable( );//启动看门狗工作
+  
  //IWDG_WriteAccessCmd(IWDG_WriteAccess_Disable);
  
  //建立 系统启动及监视任务 优先级最高
