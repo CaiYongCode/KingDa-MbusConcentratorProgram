@@ -2078,7 +2078,7 @@ void  PatrolTask( void )
             err = CJT188_WriteDataToNode(CJT188_WriteValveState_DI,  &Meter, TargetPort, 
                                      &ValveAsk,sizeof (CJT8188_ValveAsk_Struct), 
                                      &ack);
-            vTaskDelay(_1s * 8);
+            vTaskDelay(_1s * 10);
            
             if(0x00 == st.Bit.Valve_State)
             {ValveAsk.ValveCmd = CJT_188ValveOpenCmd;}
@@ -2087,7 +2087,7 @@ void  PatrolTask( void )
             err = CJT188_WriteDataToNode(CJT188_WriteValveState_DI,  &Meter, TargetPort, 
                                          &ValveAsk, sizeof (CJT8188_ValveAsk_Struct), 
                                          &ack);
-             vTaskDelay(_1s * 8);
+             vTaskDelay(_1s * 10);
             
 //            err = CJT188_ReadDataFormNode (CJT188_ReadData_DI, &Meter, TargetPort, &ack);
 //            if((ack.Data.OK.Data.ST.Bit.Valve_State != st.Bit.Valve_State)

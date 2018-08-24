@@ -21,7 +21,7 @@ TriggerName=main
 LimitSize=0
 ByteLimit=50
 [DebugChecksum]
-Checksum=-999386889
+Checksum=412261533
 [CodeCoverage]
 Enabled=_ 0
 [Exceptions]
@@ -256,11 +256,6 @@ ShowTimeLog=1
 SumEnabled=0
 ShowTimeSum=1
 SumSortOrder=0
-[Disassemble mode]
-mode=0
-[Breakpoints2]
-Bp0=_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\..\User\scr}.1234.3" 0 0 1 "" 0 "" 0
-Count=1
 [Log file]
 LoggingEnabled=_ 0
 LogFile=_ ""
@@ -268,15 +263,6 @@ Category=_ 0
 [TermIOLog]
 LoggingEnabled=_ 0
 LogFile=_ ""
-[Aliases]
-A0=_ "D:\Personal\Desktop\mbus集中器程序\BSP\scr\MCU_Config.c" ""
-A1=_ "D:\Personal\Desktop\mbus集中器程序\Projects\src\main.c" ""
-A2=_ "D:\设计数据\2017\低功耗集中器\188\Projects\src\main.c" ""
-A3=_ "D:\设计数据\2017\低功耗集中器\新建文件夹 (8)\188\Projects\src\main.c" ""
-A4=_ "E:\2016\集中器V2.2\软件\最新\Projects\src\main.c" ""
-A5=_ "F:\中科君达\集中器资料\mbus集中器\mbus集中器程序（马先跃修改）20180530\mbus集中器程序\BSP\scr\MCU_Config.c" ""
-Count=6
-SuppressDialog=1
 [DriverProfiling]
 Enabled=0
 Mode=3
@@ -287,3 +273,17 @@ Exclusions=
 Enabled=0
 [CallStackStripe]
 ShowTiming=1
+[Disassemble mode]
+mode=0
+[Breakpoints2]
+Bp0=_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\..\User\scr}.1234.3" 0 0 1 "" 0 "" 0
+Count=1
+[Aliases]
+A0=_ "D:\Personal\Desktop\mbus集中器程序\BSP\scr\MCU_Config.c" ""
+A1=_ "D:\Personal\Desktop\mbus集中器程序\Projects\src\main.c" ""
+A2=_ "D:\设计数据\2017\低功耗集中器\188\Projects\src\main.c" ""
+A3=_ "D:\设计数据\2017\低功耗集中器\新建文件夹 (8)\188\Projects\src\main.c" ""
+A4=_ "E:\2016\集中器V2.2\软件\最新\Projects\src\main.c" ""
+A5=_ "F:\中科君达\集中器资料\mbus集中器\mbus集中器程序（马先跃修改）20180530\mbus集中器程序\BSP\scr\MCU_Config.c" ""
+Count=6
+SuppressDialog=1
