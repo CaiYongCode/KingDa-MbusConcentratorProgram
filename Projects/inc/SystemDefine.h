@@ -63,15 +63,15 @@ typedef enum{
 
 typedef enum {OFF = 0, Idle = 1, Busy = 2, WaitAck = 3, Undf = 4} PortStatus;
 
-typedef struct{
- unsigned char Second;
- unsigned char Minute;
- unsigned char Hour;
- unsigned char WeekDay;
- unsigned char Day;
- unsigned char Month;
- unsigned short Year;
-}TimerData_Struct;
+//typedef struct{
+// unsigned char Second;
+// unsigned char Minute;
+// unsigned char Hour;
+// unsigned char WeekDay;
+// unsigned char Day;
+// unsigned char Month;
+// unsigned short Year;
+//}TimerData_Struct;
 
 /*********************************************************************************
 外部变量声明区

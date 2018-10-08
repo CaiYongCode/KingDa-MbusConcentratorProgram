@@ -1482,11 +1482,22 @@ static SystemErrName SingCurrentDataRcmd_Func(Server188_InputData_Stuct* Indata,
             //OutputData->pdata.SingCurrentDataRcmd_ack->Value[3]= ack.Data.OK.Data.MeterData.Flow_PV[0]; 
           //}
           //else{
-            OutputData->pdata.SingCurrentDataRcmd_ack->ST.Word = ack.Data.OK.Data.MeterData.ST.Word;
-            OutputData->pdata.SingCurrentDataRcmd_ack->Value[0]= ack.Data.OK.Data.MeterData.Flow_PV[0];
-            OutputData->pdata.SingCurrentDataRcmd_ack->Value[1]= ack.Data.OK.Data.MeterData.Flow_PV[1];
-            OutputData->pdata.SingCurrentDataRcmd_ack->Value[2]= ack.Data.OK.Data.MeterData.Flow_PV[2];
-            OutputData->pdata.SingCurrentDataRcmd_ack->Value[3]= ack.Data.OK.Data.MeterData.Flow_PV[3];
+            if(Record.Config.Comm.Bit.BaudRate == 0x05) //波特率38400代表波特率2400，且数据取反
+            {
+              OutputData->pdata.SingCurrentDataRcmd_ack->Value[0]= ack.Data.OK.Data.MeterData.Flow_PV[3];
+              OutputData->pdata.SingCurrentDataRcmd_ack->Value[1]= ack.Data.OK.Data.MeterData.Flow_PV[2];
+              OutputData->pdata.SingCurrentDataRcmd_ack->Value[2]= ack.Data.OK.Data.MeterData.Flow_PV[1];
+              OutputData->pdata.SingCurrentDataRcmd_ack->Value[3]= ack.Data.OK.Data.MeterData.Flow_PV[0];
+            }
+            else
+            {
+              OutputData->pdata.SingCurrentDataRcmd_ack->ST.Word = ack.Data.OK.Data.MeterData.ST.Word;
+              OutputData->pdata.SingCurrentDataRcmd_ack->Value[0]= ack.Data.OK.Data.MeterData.Flow_PV[0];
+              OutputData->pdata.SingCurrentDataRcmd_ack->Value[1]= ack.Data.OK.Data.MeterData.Flow_PV[1];
+              OutputData->pdata.SingCurrentDataRcmd_ack->Value[2]= ack.Data.OK.Data.MeterData.Flow_PV[2];
+              OutputData->pdata.SingCurrentDataRcmd_ack->Value[3]= ack.Data.OK.Data.MeterData.Flow_PV[3];
+            }
+            
           //}
           OutputData->pdata.SingCurrentDataRcmd_ack->ST.Bit.Lose = 0; 
         }
@@ -1802,7 +1813,7 @@ static SystemErrName config_Mbus_188(CommPortNumber_Type Port, Server188_CommDec
   case 0x02:{BaudRate = 4800;break;}
   case 0x03:{BaudRate = 9600;break;}
   case 0x04:{BaudRate = 19200;break;}
-  case 0x05:{BaudRate = 38400;break;}
+  case 0x05:{BaudRate = 2400;break;}
   case 0x06:{BaudRate = 57600;break;}
   case 0x07:{BaudRate = 115200;break;}
   default: {return IllegalParam;}
@@ -1968,10 +1979,21 @@ void  ReadTask( void )
            // Value.Flow_PV[3]= ack.Data.OK.Data.MeterData.Flow_PV[0]; 
          // }
           //else{
-            Value.Flow_PV[0] = ack.Data.OK.Data.MeterData.Flow_PV[0];
-            Value.Flow_PV[1] = ack.Data.OK.Data.MeterData.Flow_PV[1];
-            Value.Flow_PV[2] = ack.Data.OK.Data.MeterData.Flow_PV[2];
-            Value.Flow_PV[3] = ack.Data.OK.Data.MeterData.Flow_PV[3];
+
+            if(Record.Config.Comm.Bit.BaudRate == 0x05) //波特率38400代表波特率2400，且数据取反
+            {
+              Value.Flow_PV[0] = ack.Data.OK.Data.MeterData.Flow_PV[3];
+              Value.Flow_PV[1] = ack.Data.OK.Data.MeterData.Flow_PV[2];
+              Value.Flow_PV[2] = ack.Data.OK.Data.MeterData.Flow_PV[1];
+              Value.Flow_PV[3] = ack.Data.OK.Data.MeterData.Flow_PV[0];
+            }
+            else
+            {
+              Value.Flow_PV[0] = ack.Data.OK.Data.MeterData.Flow_PV[0];
+              Value.Flow_PV[1] = ack.Data.OK.Data.MeterData.Flow_PV[1];
+              Value.Flow_PV[2] = ack.Data.OK.Data.MeterData.Flow_PV[2];
+              Value.Flow_PV[3] = ack.Data.OK.Data.MeterData.Flow_PV[3];
+            }
          // }
           
           Value.ST.Word = ack.Data.OK.Data.MeterData.ST.Word;
@@ -1979,10 +2001,22 @@ void  ReadTask( void )
           if(timer.Day == _188_ConcenConfigData.timer.MonthFrozenH)
           {
             csr.Bit.Acc_E = 1; 
-            Value.Flow_Accounts[0] = ack.Data.OK.Data.MeterData.Flow_PV[0];
-            Value.Flow_Accounts[1] = ack.Data.OK.Data.MeterData.Flow_PV[1];
-            Value.Flow_Accounts[2] = ack.Data.OK.Data.MeterData.Flow_PV[2];
-            Value.Flow_Accounts[3] = ack.Data.OK.Data.MeterData.Flow_PV[3];
+
+            
+            if(Record.Config.Comm.Bit.BaudRate == 0x05) //波特率38400代表波特率2400，且数据取反
+            {
+              Value.Flow_Accounts[0] = ack.Data.OK.Data.MeterData.Flow_PV[3];
+              Value.Flow_Accounts[1] = ack.Data.OK.Data.MeterData.Flow_PV[2];
+              Value.Flow_Accounts[2] = ack.Data.OK.Data.MeterData.Flow_PV[1];
+              Value.Flow_Accounts[3] = ack.Data.OK.Data.MeterData.Flow_PV[0];
+            }
+            else
+            {
+              Value.Flow_Accounts[0] = ack.Data.OK.Data.MeterData.Flow_PV[0];
+              Value.Flow_Accounts[1] = ack.Data.OK.Data.MeterData.Flow_PV[1];
+              Value.Flow_Accounts[2] = ack.Data.OK.Data.MeterData.Flow_PV[2];
+              Value.Flow_Accounts[3] = ack.Data.OK.Data.MeterData.Flow_PV[3];
+            }
           }
         }
         else

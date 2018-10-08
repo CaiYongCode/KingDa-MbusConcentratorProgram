@@ -267,7 +267,7 @@ static void Led1_Task ( void* Param )
     RLED_ON ( ); 
     vTaskDelay(30);
     ReadTask( );
-    PatrolTask( );
+  //  PatrolTask( );
    }
 }
 /*********************************************************************************

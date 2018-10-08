@@ -312,18 +312,18 @@ SystemErrName readFormFRAM (void* Buffer, unsigned short NumByteToRead,unsigned 
  Return:        //
  Others:        //
 *********************************************************************************/   
-void get_SystemTimer (TimerData_Struct* Timer)
-{
-   vTaskSuspendAll();  //调度锁开启
-   
-   Timer->Second = SystemTimer.Second;
-   Timer->Year = SystemTimer.Year;
-   Timer->Month = SystemTimer.Month;
-   Timer->Day = SystemTimer.Day;
-   Timer->WeekDay = SystemTimer.WeekDay;
-   Timer->Hour = SystemTimer.Hour;
-   Timer->Minute = SystemTimer.Minute;
-   
-   xTaskResumeAll ();  //调度锁关闭
-}
+//void get_SystemTimer (TimerData_Struct* Timer)
+//{
+//   vTaskSuspendAll();  //调度锁开启
+//   
+//   Timer->Second = SystemTimer.Second;
+//   Timer->Year = SystemTimer.Year;
+//   Timer->Month = SystemTimer.Month;
+//   Timer->Day = SystemTimer.Day;
+//   Timer->WeekDay = SystemTimer.WeekDay;
+//   Timer->Hour = SystemTimer.Hour;
+//   Timer->Minute = SystemTimer.Minute;
+//   
+//   xTaskResumeAll ();  //调度锁关闭
+//}
 /**************************************END****************************************/
