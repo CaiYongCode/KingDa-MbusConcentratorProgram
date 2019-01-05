@@ -63,7 +63,7 @@ typedef enum {
   Server188_Beat_cmd		        = 0x1E,	//
   Server188_CleanMeter_cmd		= 0x20,	//
   Server188_ErrUpData                   = 0x21,
-  
+  Server188_AllCurrentDatas_Rcmd	= 0x32,	//读取某一采集器的所有表计当前数据+温度
 }Server188_CMD;
 typedef enum {
   NoErr   = 0x00,
@@ -201,6 +201,7 @@ typedef struct{
                                 // Byte3;    //当前累积流量整数部分的中间两位(BCD)
                                 // Byte4;    //当前累积流量整数部分的高两位(BCD)
   CJT188_ST_Stuct    ST;        //表计状态
+  signed char      Temp;      //温度
 }Server188_MeterValue_Stuct;
 
 //控制记录格式：

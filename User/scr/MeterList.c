@@ -497,6 +497,8 @@ SystemErrName write_MeterValueToRom(Server188_ValueRecordData_CSR csr, Server188
   Buff1.data.Value.Time.Day = Value->Time.Day;
   Buff1.data.Value.Time.Month = Value->Time.Month;
   Buff1.data.Value.Time.Year = Value->Time.Year;
+  Buff1.data.Value.Temp = Value->Temp;
+  
   
   Buff1.CRC16 = crc16((unsigned char *)&Buff1.data,sizeof (Server188_MeterValueRecordData_Struct));
   

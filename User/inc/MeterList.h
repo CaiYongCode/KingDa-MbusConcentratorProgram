@@ -25,6 +25,7 @@ typedef struct {
   unsigned char              Flow_Accounts[4];        //结算日累积流量
   CJT188_ST_Stuct             ST;
   Server188_Time_Stuct        Time;
+  signed char                Temp;                      //温度
 }Server188_MeterData_Struct;
 
 typedef struct{

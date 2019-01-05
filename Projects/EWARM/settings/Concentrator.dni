@@ -21,7 +21,7 @@ TriggerName=main
 LimitSize=0
 ByteLimit=50
 [DebugChecksum]
-Checksum=1206581606
+Checksum=-1718464251
 [CodeCoverage]
 Enabled=_ 0
 [Exceptions]
@@ -104,6 +104,8 @@ Fmt14=TimerData_Struct-Year	3	0
 Fmt15=USART_BuffStruct-length	3	0
 Fmt16=UsarBuff_Struct-length	3	0
 Fmt17=struct CJT188_SendBuff_Struct-PackageLength	3	0
+Fmt18=struct CJT188_SendBuff_Struct-SourcePort	4	0
+Fmt19=struct CJT188_SendBuff_Struct-TargetPort	4	0
 [array_types]
 Fmt0=char[7]	4	0
 Fmt1=unsigned char[100]	3	0
@@ -200,22 +202,23 @@ Fmt73={W}42:_1M_cnt	3	0
 Fmt74={W}42:_1S_cnt	3	0
 Fmt75={W}42:_1mS_cnt	3	0
 Fmt76={W}42:_485_test	4	0
-Fmt77={W}42:close	3	0
-Fmt78={W}42:cnt11	3	0
-Fmt79={W}42:fff1	4	0
-Fmt80={W}42:fff2	4	0
-Fmt81={W}42:iiii	4	0
-Fmt82={W}42:iiiiiiiii	4	0
-Fmt83={W}42:init_cmd	3	0
-Fmt84={W}42:j	3	0
-Fmt85={W}42:jj	3	0
-Fmt86={W}42:jjj	3	0
-Fmt87={W}42:jjjj	3	0
-Fmt88={W}42:poe	3	0
-Fmt89={W}42:poen	3	0
-Fmt90={W}42:read_addr	3	0
-Fmt91={W}42:read_value	3	0
-Fmt92={W}42:ttyyyty1322	3	0
+Fmt77={W}42:aaa	4	0
+Fmt78={W}42:close	3	0
+Fmt79={W}42:cnt11	3	0
+Fmt80={W}42:fff1	4	0
+Fmt81={W}42:fff2	4	0
+Fmt82={W}42:iiii	4	0
+Fmt83={W}42:iiiiiiiii	4	0
+Fmt84={W}42:init_cmd	3	0
+Fmt85={W}42:j	3	0
+Fmt86={W}42:jj	3	0
+Fmt87={W}42:jjj	3	0
+Fmt88={W}42:jjjj	3	0
+Fmt89={W}42:poe	3	0
+Fmt90={W}42:poen	3	0
+Fmt91={W}42:read_addr	3	0
+Fmt92={W}42:read_value	3	0
+Fmt93={W}42:ttyyyty1322	3	0
 [Trace2]
 Enabled=0
 ShowSource=0
@@ -256,6 +259,15 @@ ShowTimeLog=1
 SumEnabled=0
 ShowTimeSum=1
 SumSortOrder=0
+[Disassemble mode]
+mode=0
+[Breakpoints2]
+Bp0=_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\..\User\scr}.1234.3" 0 0 1 "" 0 "" 0
+Bp1=_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\..\User\scr\Server188.c}.334.3" 0 0 1 "" 0 "" 0
+Bp2=_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\..\User\scr\Server188.c}.310.3" 0 0 1 "" 0 "" 0
+Bp3=_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\..\User\scr\Server188.c}.411.7" 0 0 1 "" 0 "" 0
+Bp4=_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\..\User\scr\Server188.c}.1314.3" 0 0 1 "" 0 "" 0
+Count=5
 [Log file]
 LoggingEnabled=_ 0
 LogFile=_ ""
@@ -263,6 +275,15 @@ Category=_ 0
 [TermIOLog]
 LoggingEnabled=_ 0
 LogFile=_ ""
+[Aliases]
+A0=_ "D:\Personal\Desktop\mbus集中器程序\BSP\scr\MCU_Config.c" ""
+A1=_ "D:\Personal\Desktop\mbus集中器程序\Projects\src\main.c" ""
+A2=_ "D:\设计数据\2017\低功耗集中器\188\Projects\src\main.c" ""
+A3=_ "D:\设计数据\2017\低功耗集中器\新建文件夹 (8)\188\Projects\src\main.c" ""
+A4=_ "E:\2016\集中器V2.2\软件\最新\Projects\src\main.c" ""
+A5=_ "F:\中科君达\集中器资料\mbus集中器\mbus集中器程序（马先跃修改）20180530\mbus集中器程序\BSP\scr\MCU_Config.c" ""
+Count=6
+SuppressDialog=1
 [DriverProfiling]
 Enabled=0
 Mode=3
@@ -273,17 +294,3 @@ Exclusions=
 Enabled=0
 [CallStackStripe]
 ShowTiming=1
-[Disassemble mode]
-mode=0
-[Breakpoints2]
-Bp0=_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\..\User\scr}.1234.3" 0 0 1 "" 0 "" 0
-Count=1
-[Aliases]
-A0=_ "D:\Personal\Desktop\mbus集中器程序\BSP\scr\MCU_Config.c" ""
-A1=_ "D:\Personal\Desktop\mbus集中器程序\Projects\src\main.c" ""
-A2=_ "D:\设计数据\2017\低功耗集中器\188\Projects\src\main.c" ""
-A3=_ "D:\设计数据\2017\低功耗集中器\新建文件夹 (8)\188\Projects\src\main.c" ""
-A4=_ "E:\2016\集中器V2.2\软件\最新\Projects\src\main.c" ""
-A5=_ "F:\中科君达\集中器资料\mbus集中器\mbus集中器程序（马先跃修改）20180530\mbus集中器程序\BSP\scr\MCU_Config.c" ""
-Count=6
-SuppressDialog=1

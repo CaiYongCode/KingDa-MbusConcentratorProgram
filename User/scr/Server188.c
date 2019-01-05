@@ -407,8 +407,10 @@ SystemErrName Server188_InPut (void *pbuff, unsigned short length,CommPortNumber
       break;
     } 
   case Server188_AllCurrentData_Rcmd:                           //读取某一采集器的所有表计当前数据
+  case Server188_AllCurrentDatas_Rcmd:                           //读取某一采集器的所有表计当前数据（包含温度）
     {
       err = AllCurrentDataRcmd_Func(&InputData, &OutputData);
+      inpackage->Head.Code = Server188_AllCurrentDatas_Rcmd;      //将功能码强制转换成读取所有表计当前数据（包含温度）
       break;
     }     
   case Server188_AllFreezingData_Rcmd:                          //读取某一采集器的所有表计日冻结数据
@@ -436,7 +438,7 @@ SystemErrName Server188_InPut (void *pbuff, unsigned short length,CommPortNumber
       err = DeleteMeterWcmd_Func(&InputData, &OutputData);
       break;
     }   
-  case Server188_CleanMeter_cmd: 
+  case Server188_CleanMeter_cmd:                                //清空表计
     {
       if(sizeof (Server188_CleanMeterWcmd_askParam_Stuct) == inpackage->Head.DataLength.Word)
       { err = CleanMeterWcmd_Func(&InputData, &OutputData);}
@@ -1273,6 +1275,7 @@ static SystemErrName AllCurrentDataRcmd_Func(Server188_InputData_Stuct* Indata,
           OutputData->pdata.AllCurrentDataRcmd_ack->Value[OutputData->pdata.AllCurrentDataRcmd_ack->Spec.RecordNum].Value[2] = Value.Value.Flow_PV[2];
           OutputData->pdata.AllCurrentDataRcmd_ack->Value[OutputData->pdata.AllCurrentDataRcmd_ack->Spec.RecordNum].Value[3] = Value.Value.Flow_PV[3];
           OutputData->pdata.AllCurrentDataRcmd_ack->Value[OutputData->pdata.AllCurrentDataRcmd_ack->Spec.RecordNum].ST.Word = Value.Value.ST.Word;
+          OutputData->pdata.AllCurrentDataRcmd_ack->Value[OutputData->pdata.AllCurrentDataRcmd_ack->Spec.RecordNum].Temp = Value.Value.Temp;
           if(0x00 != Value.CSR.Bit.Lose )
           {OutputData->pdata.AllCurrentDataRcmd_ack->Value[OutputData->pdata.AllCurrentDataRcmd_ack->Spec.RecordNum].ST.Bit.Lose = 1;}
           else
@@ -1286,6 +1289,7 @@ static SystemErrName AllCurrentDataRcmd_Func(Server188_InputData_Stuct* Indata,
           OutputData->pdata.AllCurrentDataRcmd_ack->Value[OutputData->pdata.AllCurrentDataRcmd_ack->Spec.RecordNum].Value[2] = Value.Value.Flow_PV[2];
           OutputData->pdata.AllCurrentDataRcmd_ack->Value[OutputData->pdata.AllCurrentDataRcmd_ack->Spec.RecordNum].Value[3] = Value.Value.Flow_PV[3];
           OutputData->pdata.AllCurrentDataRcmd_ack->Value[OutputData->pdata.AllCurrentDataRcmd_ack->Spec.RecordNum].ST.Word = Value.Value.ST.Word;
+          OutputData->pdata.AllCurrentDataRcmd_ack->Value[OutputData->pdata.AllCurrentDataRcmd_ack->Spec.RecordNum].Temp = Value.Value.Temp;
           OutputData->pdata.AllCurrentDataRcmd_ack->Value[OutputData->pdata.AllCurrentDataRcmd_ack->Spec.RecordNum].ST.Bit.RomErr = 1;
         }
         OutputData->pdata.AllCurrentDataRcmd_ack->Spec.RecordNum ++; 
@@ -1972,29 +1976,20 @@ void  ReadTask( void )
           RLED_ON( ); 
           csr.Bit.PV_E = 1;
           
-          //if((Meter.Addr.MeterID[3] == 0x17)&&(Meter.Addr.MeterID[2] == 0x06)){
-          //  Value.Flow_PV[0]= ack.Data.OK.Data.MeterData.Flow_PV[3];
-          //  Value.Flow_PV[1]= ack.Data.OK.Data.MeterData.Flow_PV[2];
-           // Value.Flow_PV[2]= ack.Data.OK.Data.MeterData.Flow_PV[1];
-           // Value.Flow_PV[3]= ack.Data.OK.Data.MeterData.Flow_PV[0]; 
-         // }
-          //else{
-
-            if(Record.Config.Comm.Bit.BaudRate == 0x05) //波特率38400代表波特率2400，且数据取反
-            {
-              Value.Flow_PV[0] = ack.Data.OK.Data.MeterData.Flow_PV[3];
-              Value.Flow_PV[1] = ack.Data.OK.Data.MeterData.Flow_PV[2];
-              Value.Flow_PV[2] = ack.Data.OK.Data.MeterData.Flow_PV[1];
-              Value.Flow_PV[3] = ack.Data.OK.Data.MeterData.Flow_PV[0];
-            }
-            else
-            {
-              Value.Flow_PV[0] = ack.Data.OK.Data.MeterData.Flow_PV[0];
-              Value.Flow_PV[1] = ack.Data.OK.Data.MeterData.Flow_PV[1];
-              Value.Flow_PV[2] = ack.Data.OK.Data.MeterData.Flow_PV[2];
-              Value.Flow_PV[3] = ack.Data.OK.Data.MeterData.Flow_PV[3];
-            }
-         // }
+          if(Record.Config.Comm.Bit.BaudRate == 0x05) //波特率38400代表波特率2400，且数据取反
+          {
+            Value.Flow_PV[0] = ack.Data.OK.Data.MeterData.Flow_PV[3];
+            Value.Flow_PV[1] = ack.Data.OK.Data.MeterData.Flow_PV[2];
+            Value.Flow_PV[2] = ack.Data.OK.Data.MeterData.Flow_PV[1];
+            Value.Flow_PV[3] = ack.Data.OK.Data.MeterData.Flow_PV[0];
+          }
+          else
+          {
+            Value.Flow_PV[0] = ack.Data.OK.Data.MeterData.Flow_PV[0];
+            Value.Flow_PV[1] = ack.Data.OK.Data.MeterData.Flow_PV[1];
+            Value.Flow_PV[2] = ack.Data.OK.Data.MeterData.Flow_PV[2];
+            Value.Flow_PV[3] = ack.Data.OK.Data.MeterData.Flow_PV[3];
+          }
           
           Value.ST.Word = ack.Data.OK.Data.MeterData.ST.Word;
           
@@ -2018,6 +2013,20 @@ void  ReadTask( void )
               Value.Flow_Accounts[3] = ack.Data.OK.Data.MeterData.Flow_PV[3];
             }
           }
+          
+          err = CJT188_ReadDataFormNode (CJT188_ReadTemp_DI, &Meter, TargetPort, &ack);
+          if(NO_ERR == err)
+          {
+            //读表温度正确应答 
+            Value.Temp = ack.Data.OK.Data.MeterData.Flow_PV[0];
+            Value.ST.Bit.Temp_Flag = 0;
+          }
+          else
+          {
+            //未读到表温度
+            Value.Temp = 0;
+            Value.ST.Bit.Temp_Flag = 1;
+          }  
         }
         else
         {
@@ -2025,13 +2034,13 @@ void  ReadTask( void )
           vTaskDelay(_100ms * 8);
           csr.Bit.Lose = 0x01;
         }
+        
         write_MeterValueToRom(csr, &Value, No);
         vTaskDelay(_100ms * 2);
       }
     }while(++No < TotalNumber_MeterConfig);
     CloseAllMbus ( );
-//    ReadingMeterState = DownIdle;      
-        
+
     ReadingMeterState = ReadingFinish;
   }
 }

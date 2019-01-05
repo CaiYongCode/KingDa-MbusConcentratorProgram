@@ -85,6 +85,7 @@ typedef enum{
   CJT188_ReadRecordDate_DI    =  0x0481,      //读抄表日
   CJT188_ReadRMoney_DI        =  0x0581,      //读购入金额
   CJT188_ReadVerNo_DI         =  0x0681,      //读秘钥版本号
+  CJT188_ReadTemp_DI          =  0x0881,      //读表内温度
   CJT188_ReadAddress_DI       =  0x0A81 ,     //读地址
   
   CJT188_WritePriceList_DI    =  0x10A0,      //写价格表
@@ -157,7 +158,7 @@ typedef  union {
     unsigned short Bat_Flg: 1;        //电池电压   0：正常  1：欠压
     unsigned short Lose: 1;             //保留  本次未抄到表
     unsigned short RomErr: 1;             //保留   存储器错误 
-    unsigned short F3: 1;             //厂商自定义3
+    unsigned short Temp_Flag: 1;             //温度标志 0:已读取，1:未读取
     unsigned short F2: 1;             //厂商自定义2
     unsigned short F1: 1;             //厂商自定义1
     unsigned short Custom :8;
